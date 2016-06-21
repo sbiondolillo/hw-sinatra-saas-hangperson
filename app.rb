@@ -8,7 +8,7 @@ class HangpersonApp < Sinatra::Base
   register Sinatra::Flash
   
   before do
-    @game = session[:game] || HangpersonGame.new('')
+    @game = session[:game] || HangpersonGame.new('') #game exists
   end
   
   after do
@@ -59,13 +59,15 @@ class HangpersonApp < Sinatra::Base
   end
   
   get '/win' do
-    ### YOUR CODE HERE ###
-    erb :win # You may change/remove this line
+    redirect '/new' if @game.word.empty?
+    redirect '/show' if @game.check_win_or_lose != :win 
+    erb :win
   end
   
   get '/lose' do
-    ### YOUR CODE HERE ###
-    erb :lose # You may change/remove this line
+    redirect '/new' if @game.word.empty?
+    redirect '/show' if @game.check_win_or_lose != :lose
+    erb :lose 
   end
   
 end
